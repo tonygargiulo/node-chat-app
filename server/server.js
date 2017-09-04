@@ -12,10 +12,35 @@ var io = socketIO(server);
 
 app.use(express.static(publicPath));
 
-//register event listener:
+//register connectin event:
 io.on('connection', (socket) => {
   console.log('New user connected');
 
+  //emit custom event, index.js is ready for newEmail already
+  // socket.emit('newEmail', {
+  //   from: 'tcamper97@gmail.com',
+  //   text: "Sah dude",
+  //   createdAt: 234
+  // });
+
+
+
+  // socket.on('createEmail', (newEmail) => {
+  //   console.log(newEmail);
+  // });
+
+  socket.emit('newMessage', {
+    from: 'tonyServer',
+    text: 'this is a message sent from server',
+    createdAt: new Date()
+  });
+
+  socket.on('createMessage', (message) => {
+    console.log(message);
+  });
+
+
+  //if the client closes tab
   socket.on('disconnect', () => {
     console.log('Disconnected from client');
   });
