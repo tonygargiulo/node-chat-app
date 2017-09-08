@@ -16,14 +16,24 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('New user connected');
 
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Welcome to the chap app! :D',
+    createdAt: new Date().getTime()
+  });
+
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'A new user joined the chat',
+    createdAt: new Date().getTime()
+  });
+
   //emit custom event, index.js is ready for newEmail already
   // socket.emit('newEmail', {
   //   from: 'tcamper97@gmail.com',
   //   text: "Sah dude",
   //   createdAt: 234
   // });
-
-
 
   // socket.on('createEmail', (newEmail) => {
   //   console.log(newEmail);
@@ -38,7 +48,13 @@ io.on('connection', (socket) => {
 
   socket.on('createMessage', (message) => {
     console.log(message);
-    // io.emit for every connections
+    //broadcast emits to all sockets but the sender
+    // socket.broadcast.emit('newMessage', {
+    //   from: message.from,
+    //   text: message.text,
+    //   createdAt: new Date().getTime()
+    // });
+    // io.emit for every connection
     io.emit('newMessage', {
       from: message.from,
       text: message.text,
