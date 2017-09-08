@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
   //   createdAt: 123
   // });
 
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => {
     console.log(message);
     //broadcast emits to all sockets but the sender
     // socket.broadcast.emit('newMessage', {
@@ -48,6 +48,7 @@ io.on('connection', (socket) => {
     // });
     // io.emit for every connection
     io.emit('newMessage', generateMessage(message.from, message.text));
+    callback('This is from the server');
   });
 
 
