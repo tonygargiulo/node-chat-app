@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
-
+const {generateMessage} = require('./utils/message');
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
 var app = express();
@@ -16,17 +16,9 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('New user connected');
 
-  socket.emit('newMessage', {
-    from: 'Admin',
-    text: 'Welcome to the chap app! :D',
-    createdAt: new Date().getTime()
-  });
+  socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
 
-  socket.broadcast.emit('newMessage', {
-    from: 'Admin',
-    text: 'A new user joined the chat',
-    createdAt: new Date().getTime()
-  });
+  socket.broadcast.emit('newMessage', generateMessage('Admin', "New user joined"));
 
   //emit custom event, index.js is ready for newEmail already
   // socket.emit('newEmail', {
@@ -55,11 +47,7 @@ io.on('connection', (socket) => {
     //   createdAt: new Date().getTime()
     // });
     // io.emit for every connection
-    io.emit('newMessage', {
-      from: message.from,
-      text: message.text,
-      createdAt: new Date().getTime()
-    });
+    io.emit('newMessage', generateMessage(message.from, message.text));
   });
 
 
