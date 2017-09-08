@@ -29,14 +29,21 @@ io.on('connection', (socket) => {
   //   console.log(newEmail);
   // });
 
-  socket.emit('newMessage', {
-    from: 'tonyServer',
-    text: 'this is a message sent from server',
-    createdAt: new Date()
-  });
+// socket.emit for single connection
+  // socket.emit('newMessage', {
+  //   from: 'tonyServer',
+  //   text: 'this is a message sent from server',
+  //   createdAt: 123
+  // });
 
   socket.on('createMessage', (message) => {
     console.log(message);
+    // io.emit for every connections
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    });
   });
 
 
