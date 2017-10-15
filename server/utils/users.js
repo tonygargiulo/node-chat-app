@@ -29,7 +29,6 @@ class Users {
   addUser (id, name, room) {
     var lowerCaseRoom = room.toLowerCase();
     var user = {id, name, room, lowerCaseRoom};
-    console.log(user);
     this.users.push(user);
     return user;
   }
