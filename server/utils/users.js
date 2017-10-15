@@ -14,8 +14,22 @@ class Users {
   constructor () {
     this.users = [];
   }
+  nameIsTaken (name, room) {
+    var sameNames = this.users.filter((user) => {
+      var isSameName = (user.name.toLowerCase() === name.toLowerCase());
+      var isSameRoom = (user.lowerCaseRoom === room.toLowerCase());
+
+
+
+      return (isSameName && isSameRoom);
+
+    })
+    if (sameNames.length >= 1) return true;
+  }
   addUser (id, name, room) {
-    var user = {id, name, room};
+    var lowerCaseRoom = room.toLowerCase();
+    var user = {id, name, room, lowerCaseRoom};
+    console.log(user);
     this.users.push(user);
     return user;
   }
@@ -35,10 +49,10 @@ class Users {
   getUser (id) {
     return this.users.find((user) => user.id === id);
   }
-  getUserList (room) {
-    var users = this.users.filter((user) => user.room === room);
-    var namesArray = users.map((user) => user.name);
+  getUserList (lowerCaseRoom) {
 
+    var users = this.users.filter((user) => user.lowerCaseRoom === lowerCaseRoom);
+    var namesArray = users.map((user) => user.name);
     return namesArray;
   }
 }

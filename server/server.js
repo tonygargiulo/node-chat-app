@@ -48,7 +48,11 @@ io.on('connection', (socket) => {
       return callback('Name and room name are required.');
     }
 
-    socket.join(params.room);
+    if (users.nameIsTaken(params.name, params.room)) {
+      return callback('Name has been taken! Please choose another.');
+    }
+
+    socket.join(params.room.toLowerCase());
     users.removeUser(socket.id); // remove any users already with this id
     users.addUser(socket.id, params.name, params.room);
     // socket.leave(params.room); to leave room
@@ -59,9 +63,9 @@ io.on('connection', (socket) => {
     // io.to(room name).emit -> emits to everyone in room
     // socket.broadcast.to(room name).emit ->emits to everyone in room but current user
 
-    io.to(params.room).emit('updateUserList', users.getUserList(params.room));
+    io.to(params.room).emit('updateUserList', users.getUserList(params.room.toLowerCase()));
     socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
-    socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined`));
+    socket.broadcast.to(params.room.toLowerCase()).emit('newMessage', generateMessage('Admin', `${params.name} has joined`));
 
     callback();
   });
@@ -71,7 +75,7 @@ io.on('connection', (socket) => {
 
     if (user && isRealString(message.text)) {
       // io.emit for sending to every connection
-      io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+      io.to(user.lowerCaseRoom).emit('newMessage', generateMessage(user.name, message.text));
     }
 
 

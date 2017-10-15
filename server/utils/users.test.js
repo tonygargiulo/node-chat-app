@@ -10,15 +10,18 @@ describe('Users', () => {
     users.users = [{
       id: '1',
       name: 'Tony',
-      room: 'Node Course Room'
+      room: 'Node Course Room',
+      lowerCaseRoom: 'node course room'
     },  {
       id: '2',
       name: 'Wilma',
-      room: 'React Course Room'
+      room: 'React Course Room',
+      lowerCaseRoom: 'react course room'
     },  {
       id: '3',
       name: 'Bob',
-      room: 'Node Course Room'
+      room: 'Node Course Room',
+      lowerCaseRoom: 'node course room'
     }];
   });
 
@@ -27,7 +30,8 @@ describe('Users', () => {
     var user = {
       id: '123',
       name: 'Tony',
-      room: 'Office Fam'
+      room: 'Office Fam',
+      lowerCaseRoom: 'office fam'
     };
     var resUser = users.addUser(user.id, user.name, user.room);
 
@@ -62,12 +66,12 @@ describe('Users', () => {
   });
 
   it('should return names for node course room', () => {
-    var userList = users.getUserList('Node Course Room');
+    var userList = users.getUserList('node course room');
 
     expect(userList).toEqual(['Tony', 'Bob']);
   });
   it('should return names for react course room', () => {
-    var userList = users.getUserList('React Course Room');
+    var userList = users.getUserList('react course room');
 
     expect(userList).toEqual(['Wilma']);
   });
